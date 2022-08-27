@@ -1,0 +1,438 @@
+﻿@page "/"
+<PageTitle>Крестики-нолики</PageTitle>
+@using Microsoft.AspNetCore.Components.Web
+@using ClassLibrary1
+<body>
+<div class="text-center">
+    <div class="container-buttons">
+            <button @onclick="changeImageKrest">
+                <img src="@imageKrest" width="80" height="80"/>
+            </button>
+            <button @onclick="changeImageNol">
+                <img src="@imageNol" width="80" height="80" />
+            </button>
+    </div>
+</div>
+<div class="text-center">
+    <p>@winstext</p>
+    <div class="container-buttons">
+            <button @onclick="Reactionbutton1"> <img src="@imageCell1" width="100" height="100" /></button>
+            <button @onclick="Reactionbutton2"> <img src="@imageCell2" width="100" height="100" /></button>
+            <button @onclick="Reactionbutton3"> <img src="@imageCell3" width="100" height="100" /></button>
+    </div>
+    <div class="container-buttons">
+            <button @onclick="Reactionbutton4"> <img src="@imageCell4" width="100" height="100" /></button>
+            <button @onclick="Reactionbutton5"> <img src="@imageCell5" width="100" height="100" /></button>
+            <button @onclick="Reactionbutton6"> <img src="@imageCell6" width="100" height="100" /></button>
+    </div>
+    <div class="container-buttons">
+            <button @onclick="Reactionbutton7"> <img src="@imageCell7" width="100" height="100" /></button>
+            <button @onclick="Reactionbutton8"> <img src="@imageCell8" width="100" height="100" /></button>
+            <button @onclick="Reactionbutton9"> <img src="@imageCell9" width="100" height="100" /></button>
+    </div>
+</div>
+<div class="text-center">
+        <button @onclick="StartGame">@textNewGame</button>
+</div>
+</body>
+@code {
+    private bool CheckKrest = false;
+    private bool CheckNol = false;
+    private string? imageKrest =  $"images/Krest.jpg";
+    private string? imageNol = $"images/Nolik.png";
+    private string? imageCell1 = $"images/Fon.jpg";
+    private string? imageCell2 = $"images/Fon.jpg";
+    private string? imageCell3 = $"images/Fon.jpg";
+    private string? imageCell4 = $"images/Fon.jpg";
+    private string? imageCell5 = $"images/Fon.jpg";
+    private string? imageCell6 = $"images/Fon.jpg";
+    private string? imageCell7 = $"images/Fon.jpg";
+    private string? imageCell8 = $"images/Fon.jpg";
+    private string? imageCell9 = $"images/Fon.jpg";
+    private string? winstext="";
+    private string? textNewGame = "Начать игру";
+    private bool StartGameCheck;
+    int[,] matrix = new int[3,3];
+    private int CheckXod = 2;
+    private bool NewGameCheck = true;
+    private void StartGame()
+    {
+        if (NewGameCheck == true)
+        {
+            StartGameCheck = true;
+            textNewGame = "Начать новую игру";
+            NewGameCheck=false;
+        }
+        if (NewGameCheck == false)
+        {
+            imageKrest = $"images/Krest.jpg";
+            imageNol = $"images/Nolik.png";
+            imageCell1 = $"images/Fon.jpg";
+            imageCell2 = $"images/Fon.jpg";
+            imageCell3 = $"images/Fon.jpg";
+            imageCell4 = $"images/Fon.jpg";
+            imageCell5 = $"images/Fon.jpg";
+            imageCell6 = $"images/Fon.jpg";
+            imageCell7 = $"images/Fon.jpg";
+            imageCell8 = $"images/Fon.jpg";
+            imageCell9 = $"images/Fon.jpg";
+            CheckKrest = false;
+            CheckNol = false;
+            CheckXod = 2;
+            winstext = "";
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    matrix[i, j] = 0;
+                }
+            }
+        }
+    }
+    private void changeImageKrest()
+    {
+        if (StartGameCheck == true)
+        {
+            if (CheckNol == true & CheckXod == 1)
+            {
+                imageKrest = $"images/Krest_black_sqr.png";
+                imageNol = $"images/Nolik.png";
+                CheckNol = false;
+                CheckKrest = true;
+                CheckXod = 2;
+            }
+            if (CheckNol == false & CheckXod == 2)
+            {
+                CheckKrest = true;
+                imageKrest = $"images/Krest_black_sqr.png";
+            }
+            return;
+        }
+    }
+    private void changeImageNol()
+    {
+        if (StartGameCheck == true)
+        {
+            if (CheckKrest == true & CheckXod == 1)
+            {
+                imageKrest = $"images/Krest.jpg";
+                imageNol = $"images/Nolik_black_sqr.png";
+                CheckKrest = false;
+                CheckNol = true;
+                CheckXod = 2;
+            }
+            if (CheckKrest == false & CheckXod == 2)
+            {
+                CheckNol = true;
+                imageNol = $"images/Nolik_black_sqr.png";
+            }
+            return;
+        }
+    }
+    private void Reactionbutton1()
+    {
+        if (StartGameCheck == true)
+        {
+            if (winstext == "")
+            {
+
+                if (CheckXod == 2)
+                {
+
+                    if (CheckNol == true)
+                    {
+                        if (imageCell1 == $"images/Fon.jpg")
+                        {
+                            imageCell1 = $"images/Nolik.png";
+                            CheckXod = 1;
+                            matrix[0, 0] = 1;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                    if (CheckKrest == true)
+                    {
+                        if (imageCell1 == $"images/Fon.jpg")
+                        {
+                            imageCell1 = $"images/Krest.jpg";
+                            CheckXod = 1;
+                            matrix[0, 0] = 4;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    private void Reactionbutton2()
+    {
+        if (StartGameCheck == true)
+        {
+            if (winstext == "")
+            {
+
+                if (CheckXod == 2)
+                {
+
+                    if (CheckNol == true)
+                    {
+                        if (imageCell2 == $"images/Fon.jpg")
+                        {
+                            imageCell2 = $"images/Nolik.png";
+                            CheckXod = 1;
+                            matrix[0, 1] = 1;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                    if (CheckKrest == true)
+                    {
+                        if (imageCell2 == $"images/Fon.jpg")
+                        {
+                            imageCell2 = $"images/Krest.jpg";
+                            CheckXod = 1;
+                            matrix[0, 1] = 4;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    private void Reactionbutton3()
+    {
+        if (StartGameCheck == true)
+        {
+            if (winstext == "")
+            {
+                if (CheckXod == 2)
+                {
+
+                    if (CheckNol == true)
+                    {
+                        if (imageCell3 == $"images/Fon.jpg")
+                        {
+                            imageCell3 = $"images/Nolik.png";
+                            CheckXod = 1;
+                            matrix[0, 2] = 1;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                    if (CheckKrest == true)
+                    {
+                        if (imageCell3 == $"images/Fon.jpg")
+                        {
+                            imageCell3 = $"images/Krest.jpg";
+                            CheckXod = 1;
+                            matrix[0, 2] = 4;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void Reactionbutton4()
+    {
+        if (winstext == "")
+        {
+            if (StartGameCheck == true)
+            {
+
+                if (CheckXod == 2)
+                {
+
+                    if (CheckNol == true)
+                    {
+                        if (imageCell4 == $"images/Fon.jpg")
+                        {
+                            imageCell4 = $"images/Nolik.png";
+                            CheckXod = 1;
+                            matrix[1, 0] = 1;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                    if (CheckKrest == true)
+                    {
+                        if (imageCell4 == $"images/Fon.jpg")
+                        {
+                            imageCell4 = $"images/Krest.jpg";
+                            CheckXod = 1;
+                            matrix[1, 0] = 4;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    private void Reactionbutton5()
+    {
+        if (winstext == "")
+        {
+            if (StartGameCheck == true)
+            {
+
+                if (CheckXod == 2)
+                {
+
+                    if (CheckNol == true)
+                    {
+                        if (imageCell5 == $"images/Fon.jpg")
+                        {
+                            imageCell5 = $"images/Nolik.png";
+                            CheckXod = 1;
+                            matrix[1, 1] = 1;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                    if (CheckKrest == true)
+                    {
+                        if (imageCell5 == $"images/Fon.jpg")
+                        {
+                            imageCell5 = $"images/Krest.jpg";
+                            CheckXod = 1;
+                            matrix[1, 1] = 4;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void Reactionbutton6()
+    {
+        if (winstext == "")
+        {
+            if (StartGameCheck == true)
+            {
+
+                if (CheckXod == 2)
+                {
+
+                    if (CheckNol == true)
+                    {
+                        if (imageCell6 == $"images/Fon.jpg")
+                        {
+                            imageCell6 = $"images/Nolik.png";
+                            CheckXod = 1;
+                            matrix[1, 2] = 1;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                    if (CheckKrest == true)
+                    {
+                        if (imageCell6 == $"images/Fon.jpg")
+                        {
+                            imageCell6 = $"images/Krest.jpg";
+                            CheckXod = 1;
+                            matrix[1, 2] = 4;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void Reactionbutton7()
+    {
+        if (winstext == "")
+        {
+            if (StartGameCheck == true)
+            {
+                if (CheckXod == 2)
+                {
+
+                    if (CheckNol == true)
+                    {
+                        if (imageCell7 == $"images/Fon.jpg")
+                        {
+                            imageCell7 = $"images/Nolik.png";
+                            CheckXod = 1;
+                            matrix[2, 0] = 1;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                    if (CheckKrest == true)
+                    {
+                        if (imageCell7 == $"images/Fon.jpg")
+                        {
+                            imageCell7 = $"images/Krest.jpg";
+                            CheckXod = 1;
+                            matrix[2, 0] = 4;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void Reactionbutton8()
+    {
+        if (winstext == "")
+        {
+            if (StartGameCheck == true)
+            {
+                if (CheckXod == 2)
+                {
+
+                    if (CheckNol == true)
+                    {
+                        if (imageCell8 == $"images/Fon.jpg")
+                        {
+                            imageCell8 = $"images/Nolik.png";
+                            CheckXod = 1;
+                            matrix[2, 1] = 1;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                    if (CheckKrest == true)
+                    {
+                        if (imageCell8 == $"images/Fon.jpg")
+                        {
+                            imageCell8 = $"images/Krest.jpg";
+                            CheckXod = 1;
+                            matrix[2, 1] = 4;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    private void Reactionbutton9()
+    {
+        if (winstext=="")
+        {
+            if (StartGameCheck == true)
+            {
+                if (CheckXod == 2)
+                {
+
+                    if (CheckNol == true)
+                    {
+                        if (imageCell9 == $"images/Fon.jpg")
+                        {
+                            imageCell9 = $"images/Nolik.png";
+                            CheckXod = 1;
+                            matrix[2, 2] = 1;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                    if (CheckKrest == true)
+                    {
+                        if (imageCell9 == $"images/Fon.jpg")
+                        {
+                            imageCell9 = $"images/Krest.jpg";
+                            CheckXod = 1;
+                            matrix[2, 2] = 4;
+                            winstext = Class1.Checkwins(matrix);
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+}
